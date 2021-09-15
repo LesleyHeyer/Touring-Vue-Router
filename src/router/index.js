@@ -1,19 +1,44 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import EventList from '../views/EventList.vue'
-import EventDetails from '../views/EventDetails.vue'
+import EventLayout from '../views/event/Layout.vue'
+import EventDetails from '../views/event/Details'
+import EventRegister from '../views/event/Register'
+import EventEdit from '../views/event/Edit'
 import About from '../views/About.vue'
 
 const routes = [
   {
     path: '/',
     name: 'EventList',
-    component: EventList
+    component: EventList,
+    props: route => ({ page: parseInt(route.query.page) || 1 })
   },
   {
     path: '/event/:id',
-    name: 'EventDetails',
+    name: 'EventLayout',
     props: true,
-    component: EventDetails
+    component: EventLayout,
+    children: [
+      {
+        path: '',
+        name: 'EventDetails',
+        props: true,
+        component: EventDetails
+
+      },
+      {
+        path: 'register',
+        name: 'EventRegister',
+        props: true,
+        component: EventRegister
+      },
+      {
+        path: 'edit',
+        name: 'EventEdit',
+        props: true,
+        component: EventEdit
+      }
+    ]
   },
   {
     path: '/about',
